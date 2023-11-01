@@ -3,7 +3,7 @@
 #include <math.h>
 #include "main.h"
 
-int proj_mm(int x[2][3], int y[3], int Matrix_Result[2][1]) {
+float proj_mm(float Projection_Matrix[2][3], float Rotation_Matrix[3][1], float Matrix_Result[2][1]) {
 
     
     // Matrix Multiplication
@@ -11,7 +11,7 @@ int proj_mm(int x[2][3], int y[3], int Matrix_Result[2][1]) {
         for (int j = 0; j < 1; j++) { // Matrix_Result COLUMN
             
             for (int k = 0; k < 3; k++) {
-            Matrix_Result[i][j] += x[i][k] * y[k];
+            Matrix_Result[i][j] += Projection_Matrix[i][k] * Rotation_Matrix[k][j];
             }
         }
     }/*
@@ -22,29 +22,50 @@ int proj_mm(int x[2][3], int y[3], int Matrix_Result[2][1]) {
     printf("\n");
     }  */
 }
-
-int rot_mm(float angle, int Matrix_Result[2][1], int Rotated_Matrix[2][1]) {
+float b = 10;
+float rot_mm(float angle, float Point[3], float Rotated_Matrix[3][1]) {
     // Rotation Matrix
-    float Rot_Matrix[2][2] = {
-        {cos(angle), -sin(angle)}, 
-        {sin(angle), cos(angle)}
+    float a = cos(b)/2;
+    b += .0001;
+    float Rot_Matrix_X[3][3] = {
+        {1, 0, 0},
+        {0, cos(a), -sin(a)},
+        {-sin(a), 0, cos(a)}
     };
 
-    for (int i = 0; i < 2; i++) {
+    float Rot_Matrix_Y[3][3] = {
+        {cos(angle), 0, sin(angle)}, 
+        {0, 1, 0},
+        {-sin(angle), 0, cos(angle)}
+    };
+
+    float RM1[3][1] = {{0}, {0}, {0}};
+    
+    for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 1; j++) {
-            for (int k = 0; k < 2; k++) {
-                Rotated_Matrix[i][j] += Rot_Matrix[i][k] * Matrix_Result[k][j];
+            for (int k = 0; k < 3; k++) {
+                RM1[i][0] += Rot_Matrix_Y[i][k] * Point[k];
             }
         }
     }
-    for (int i = 0; i < 2; i++) {
+    
+    
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 1; j++) {
+            for (int k = 0; k < 3; k++) {
+                Rotated_Matrix[i][j] += Rot_Matrix_X[i][k] * RM1[k][j];
+            }
+        }
+    }
+    /*
+    for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 1; j++) {
         printf("%d\t", Rotated_Matrix[i][j]);
     }
     printf("\n");
     } 
     printf("Done\n");
-
+    */
 }
 
 
