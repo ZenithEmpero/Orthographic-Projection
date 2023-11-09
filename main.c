@@ -29,9 +29,9 @@ int main(int argc, char* argv[]) {
 
     b = 200;
     float axisPoints[3][3] = {
-        {b, 0, 0},
-        {0, -b, 0},
-        {0, 0, b}
+        {-1 * b, 0, 0},
+        {0, -1 * b, 0},
+        {0, 0, -1 * b}
     };
 
     float z = 1;
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
         {0, z, 0}
     };
 
-
+    float c = 0;
     // LOOP
     SDL_Event event;
     int quit = 0;
@@ -50,7 +50,8 @@ int main(int argc, char* argv[]) {
                 quit = 1;
             }
         }
-
+        c += .001;
+        points[2][1] += cos(c)/2;
         // Clear the renderer
         SDL_SetRenderDrawColor(renderer, 23, 74, 37, 255);
         SDL_RenderClear(renderer);
@@ -61,16 +62,16 @@ int main(int argc, char* argv[]) {
             float Rotated_Matrix[3][1] = {{0}, {0}, {0}};
             rot_mm(angle, axisPoints[i], Rotated_Matrix);
             proj_mm(Projection_Matrix, Rotated_Matrix, Matrix_Result);
-            linePoints[i][0] = Matrix_Result[0][0] + (WIDTH/2);
-            linePoints[i][1] = Matrix_Result[1][0] + (HEIGHT/2);
-            drawPoint(Matrix_Result[0][0] + (WIDTH/2), Matrix_Result[1][0] + (HEIGHT/2), 10, renderer);
+            linePoints[i][0] = Matrix_Result[0][0] ;
+            linePoints[i][1] = Matrix_Result[1][0];
+            drawPoint(Matrix_Result[0][0] , Matrix_Result[1][0], 10, renderer);
         }
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderDrawLine(renderer, 0 + (WIDTH/2), 0 + (HEIGHT/2), linePoints[0][0], linePoints[0][1]);
+        drawLine(renderer, 0, 0, linePoints[0][0], linePoints[0][1]);
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderDrawLine(renderer, 0 + (WIDTH/2), 0 + (HEIGHT/2), linePoints[1][0], linePoints[1][1]);
+        drawLine(renderer, 0, 0, linePoints[1][0], linePoints[1][1]);
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_RenderDrawLine(renderer, 0 + (WIDTH/2), 0 + (HEIGHT/2), linePoints[2][0], linePoints[2][1]);
+        drawLine(renderer, 0, 0, linePoints[2][0], linePoints[2][1]);
 
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -79,29 +80,29 @@ int main(int argc, char* argv[]) {
             float Rotated_Matrix[3][1] = {{0}, {0}, {0}};
             rot_mm(angle, points[i], Rotated_Matrix);
             proj_mm(Projection_Matrix, Rotated_Matrix, Matrix_Result);
-            linePoints[i][0] = Matrix_Result[0][0] + (WIDTH/2);
-            linePoints[i][1] = Matrix_Result[1][0] + (HEIGHT/2);
-            //drawPoint(Matrix_Result[0][0] + (WIDTH/2), Matrix_Result[1][0] + (HEIGHT/2), 10, renderer);
+            linePoints[i][0] = Matrix_Result[0][0] ;
+            linePoints[i][1] = Matrix_Result[1][0];
+            //drawPoint(Matrix_Result[0][0] , Matrix_Result[1][0], 10, renderer);
         }
         //SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
         // Front Face
-        SDL_RenderDrawLine(renderer, linePoints[0][0], linePoints[0][1], linePoints[1][0], linePoints[1][1]);
-        SDL_RenderDrawLine(renderer, linePoints[1][0], linePoints[1][1], linePoints[2][0], linePoints[2][1]);
-        SDL_RenderDrawLine(renderer, linePoints[2][0], linePoints[2][1], linePoints[3][0], linePoints[3][1]);
-        SDL_RenderDrawLine(renderer, linePoints[3][0], linePoints[3][1], linePoints[0][0], linePoints[0][1]);
+        drawLine(renderer, linePoints[0][0], linePoints[0][1], linePoints[1][0], linePoints[1][1]);
+        drawLine(renderer, linePoints[1][0], linePoints[1][1], linePoints[2][0], linePoints[2][1]);
+        drawLine(renderer, linePoints[2][0], linePoints[2][1], linePoints[3][0], linePoints[3][1]);
+        drawLine(renderer, linePoints[3][0], linePoints[3][1], linePoints[0][0], linePoints[0][1]);
 
         // Rear Face
-        SDL_RenderDrawLine(renderer, linePoints[4][0], linePoints[4][1], linePoints[5][0], linePoints[5][1]);
-        SDL_RenderDrawLine(renderer, linePoints[5][0], linePoints[5][1], linePoints[6][0], linePoints[6][1]);
-        SDL_RenderDrawLine(renderer, linePoints[6][0], linePoints[6][1], linePoints[7][0], linePoints[7][1]);
-        SDL_RenderDrawLine(renderer, linePoints[7][0], linePoints[7][1], linePoints[4][0], linePoints[4][1]);
+        drawLine(renderer, linePoints[4][0], linePoints[4][1], linePoints[5][0], linePoints[5][1]);
+        drawLine(renderer, linePoints[5][0], linePoints[5][1], linePoints[6][0], linePoints[6][1]);
+        drawLine(renderer, linePoints[6][0], linePoints[6][1], linePoints[7][0], linePoints[7][1]);
+        drawLine(renderer, linePoints[7][0], linePoints[7][1], linePoints[4][0], linePoints[4][1]);
 
         // Side Face
-        SDL_RenderDrawLine(renderer, linePoints[0][0], linePoints[0][1], linePoints[4][0], linePoints[4][1]);
-        SDL_RenderDrawLine(renderer, linePoints[1][0], linePoints[1][1], linePoints[5][0], linePoints[5][1]);
-        SDL_RenderDrawLine(renderer, linePoints[2][0], linePoints[2][1], linePoints[6][0], linePoints[6][1]);
-        SDL_RenderDrawLine(renderer, linePoints[3][0], linePoints[3][1], linePoints[7][0], linePoints[7][1]);
-        angle += .002;
+        drawLine(renderer, linePoints[0][0], linePoints[0][1], linePoints[4][0], linePoints[4][1]);
+        drawLine(renderer, linePoints[1][0], linePoints[1][1], linePoints[5][0], linePoints[5][1]);
+        drawLine(renderer, linePoints[2][0], linePoints[2][1], linePoints[6][0], linePoints[6][1]);
+        drawLine(renderer, linePoints[3][0], linePoints[3][1], linePoints[7][0], linePoints[7][1]);
+        angle += .0002;
 
         // Present the renderer
         SDL_RenderPresent(renderer);

@@ -70,7 +70,10 @@ float rot_mm(float angle, float Point[3], float Rotated_Matrix[3][1]) {
 
 
 int drawPoint(int x, int y, int s, SDL_Renderer* renderer) {
-    SDL_Rect myRect = {x - (s/2), y - (s/2), s, s};
+    SDL_Rect myRect = {(x - (s/2)) + (WIDTH/2), (y - (s/2)) + (HEIGHT/2), s, s};
     SDL_RenderFillRect(renderer, &myRect);
 }
 
+int drawLine(SDL_Renderer* renderer, float x1, float y1, float x2, float y2) {
+    SDL_RenderDrawLine(renderer, x1 + (WIDTH/2), y1 + (HEIGHT/2), x2 + (WIDTH/2), y2 + (HEIGHT/2));
+}
