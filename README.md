@@ -1,2 +1,2 @@
-# 3D-ENGINE
- My first small project with C
+Basic orthographic projection
+![Orthographic Projection](https://giphy.com/gifs/oEXGbKjqwzLzcTcW0W)
